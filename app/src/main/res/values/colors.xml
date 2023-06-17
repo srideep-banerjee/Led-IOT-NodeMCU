@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="bluePrimary">#1C89FF</color>
-    <color name="background">#FFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="backgroundVarient">#F5F5F5</color>
+    <color name="textColor">#000000</color>
 </resources>

@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         msgText = findViewById(R.id.buttonText)
         buttonText = findViewById(R.id.buttonText)
-        httpClient = OkHttpClient()
+        //httpClient = OkHttpClient()
 
     }
 }

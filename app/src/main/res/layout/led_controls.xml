@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:text="LED 1"
             android:textColor="@color/textColor"
             android:textSize="20sp"
@@ -57,17 +57,32 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/dropDown"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/brightnessText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Brightness"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/brightnessTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="Brightness"
+            android:layout_marginBottom="20dp"
+            android:text="100"
             android:textColor="@color/textColor"
             android:textSize="18sp"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -78,10 +93,14 @@
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/brightnessTV"
+            android:max="255"
+            android:progress="255"
+            android:progressTint="@color/bluePrimary"
+            android:thumbTint="@color/bluePrimary"
+            app:layout_constraintBottom_toBottomOf="@id/brightnessText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/brightnessTV"
-            app:layout_constraintTop_toTopOf="@id/brightnessTV" />
+            app:layout_constraintStart_toEndOf="@id/brightnessText"
+            app:layout_constraintTop_toTopOf="@id/brightnessText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

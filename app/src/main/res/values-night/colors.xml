@@ -2,6 +2,6 @@
 <resources>
     <color name="bluePrimary">#45BDFF</color>
     <color name="background">#000000</color>
-    <color name="backgroundVarient">#0F0F0F</color>
+    <color name="backgroundVarient">#121212</color>
     <color name="textColor">#FFFFFF</color>
 </resources>

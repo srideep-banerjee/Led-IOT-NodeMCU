@@ -1,14 +1,13 @@
 package com.project.lednodemcu
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.button.MaterialButton
-import com.project.lednodemcu.AnimatorUtil.Companion.animateBackgroundColor
-import com.project.lednodemcu.AnimatorUtil.Companion.animateTextColor
+import androidx.core.content.ContextCompat
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressedButton: View
     private lateinit var offlineScreen: View
     private lateinit var onlineScreen: View
-    private lateinit var ledController: Array<LedController>
+    private lateinit var ledControllers: Array<LedController>
 
     val url = "https://www.google.com"
 
@@ -47,9 +46,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadOnlineScreen() {
-        val ids= arrayOf(R.id.include1,R.id.include2,R.id.include3)
-        ledController= Array(3){ index-> LedController(this,ids[index],index+1) }
+        val ids = arrayOf(R.id.include1, R.id.include2, R.id.include3)
+        ledControllers = Array(3) { index -> LedController(this, ids[index], index + 1) }
 
+    }
+
+    fun resetLedUI() {
+        runOnUiThread {
+            for (led in ledControllers) {
+                led.reset()
+            }
+        }
     }
 
     fun connect() {
@@ -93,7 +100,8 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        while(!this@MainActivity::ledController.isInitialized){}
+                        while (!this@MainActivity::ledControllers.isInitialized) ;
+                        this@MainActivity.resetLedUI()
                         offlineScreen.visibility = View.GONE
                         onlineScreen.visibility = View.VISIBLE
                     }
@@ -114,9 +122,42 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        if(!this::ledController.isInitialized){
+        if (!this::ledControllers.isInitialized) {
             loadOnlineScreen()
         }
+        resetLedUI()
+    }
+
+    fun animateBackgroundColor(
+        view: View,
+        color1: Int,
+        color2: Int,
+        context: AppCompatActivity,
+        property: String = "backgroundColor"
+    ) {
+        val colorFrom = ContextCompat.getColor(context, color1)
+        val colorTo = ContextCompat.getColor(context, color2)
+        val colorAnimator = ObjectAnimator.ofObject(
+            view, property, ArgbEvaluator(), colorFrom, colorTo
+        )
+        colorAnimator.duration = 300
+        colorAnimator.start()
+    }
+
+    fun animateTextColor(
+        view: TextView,
+        color1: Int,
+        color2: Int,
+        context: AppCompatActivity,
+        property: String = "textColor"
+    ) {
+        val colorFrom = ContextCompat.getColor(context, color1)
+        val colorTo = ContextCompat.getColor(context, color2)
+        val colorAnimator = ObjectAnimator.ofObject(
+            view, property, ArgbEvaluator(), colorFrom, colorTo
+        )
+        colorAnimator.duration = 300
+        colorAnimator.start()
     }
 
 }

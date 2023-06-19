@@ -68,7 +68,7 @@ class LedController(context: MainActivity, id: Int, index: Int) {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 ledProgressBar.visibility = View.VISIBLE
-                val requestBody = "reset".toRequestBody("plain/text".toMediaType())
+                val requestBody = "$index ${ledSeekBar.progress}".toRequestBody("plain/text".toMediaType())
                 val request = Request.Builder().url(context.url).post(requestBody).build()
                 context.httpClient.newCall(request).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {

@@ -69,10 +69,14 @@ class LedController(context: MainActivity, id: Int, index: Int) {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 ledProgressBar.visibility = View.VISIBLE
                 val requestBody = "reset".toRequestBody("plain/text".toMediaType())
-                val request = Request.Builder().url(context.url)./*post(requestBody).*/build()
+                val request = Request.Builder().url(context.url).post(requestBody).build()
                 context.httpClient.newCall(request).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        context.runOnUiThread { ledProgressBar.visibility = View.INVISIBLE }
+                        context.runOnUiThread {
+                            ledBrightnessText.visibility = View.VISIBLE
+                            ledBrightnessTV.visibility = View.INVISIBLE
+                            ledProgressBar.visibility = View.INVISIBLE
+                        }
                         context.connect()
                     }
 
@@ -91,9 +95,9 @@ class LedController(context: MainActivity, id: Int, index: Int) {
 
     private fun toggleLed() {
         ledProgressBar.visibility = View.VISIBLE
-        val message = if (ledOn) "${this.index} 0" else "${this.index} 255"
+        val message = if (ledOn) "${this.index} 0" else "${this.index} ${ledSeekBar.progress}"
         val requestBody = message.toRequestBody("plain/text".toMediaType())
-        val request = Request.Builder().url(context.url)./*post(requestBody).*/build()
+        val request = Request.Builder().url(context.url).post(requestBody).build()
         context.httpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 context.runOnUiThread { ledProgressBar.visibility = View.INVISIBLE }
@@ -112,7 +116,7 @@ class LedController(context: MainActivity, id: Int, index: Int) {
                                 R.color.bluePrimary,
                                 this@LedController.context,
 
-                            )
+                                )
                             animateTextColor(
                                 ledButton,
                                 R.color.bluePrimary,
@@ -148,8 +152,8 @@ class LedController(context: MainActivity, id: Int, index: Int) {
         ledOn = false
         ledSeekBar.progress = 255
         ledBrightnessTV.text = "100"
-        val temp=ledButton.background
-        temp.setTint(ContextCompat.getColor(context,R.color.background))
+        val temp = ledButton.background
+        temp.setTint(ContextCompat.getColor(context, R.color.background))
         ledButton.setBackgroundDrawable(temp)
         ledButton.setTextColor(ContextCompat.getColor(context, R.color.bluePrimary))
         ledButton.text = "TURN ON"

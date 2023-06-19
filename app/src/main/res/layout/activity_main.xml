@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
 
         <include
@@ -125,6 +125,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="13dp"
+            android:text="IP Address"
+            android:textColor="@color/textColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ipEditText"
+            app:layout_constraintEnd_toStartOf="@+id/ipEditText"
+            app:layout_constraintStart_toStartOf="@+id/msgText"
+            app:layout_constraintTop_toTopOf="@+id/ipEditText" />
+
+        <EditText
+            android:id="@+id/ipEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:text="192.168.208.220"
+            android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="@+id/msgText"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/msgText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,11 +20,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var httpClient: OkHttpClient
     private lateinit var loadingCircle: ProgressBar
     private lateinit var progressedButton: View
+    private lateinit var ipEditText: EditText
     private lateinit var offlineScreen: View
     private lateinit var onlineScreen: View
     private lateinit var ledControllers: Array<LedController>
 
-    val url = "https://www.google.com"
+    lateinit var url: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         msgText = findViewById(R.id.msgText)
         loadingCircle = findViewById(R.id.loadingCircle)
         progressedButton = findViewById(R.id.progressedButton)
+        ipEditText = findViewById(R.id.ipEditText);
         offlineScreen = findViewById(R.id.offlineScreen)
         onlineScreen = findViewById(R.id.onlineScreen)
         httpClient = OkHttpClient()
@@ -60,6 +63,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun connect() {
+        url = "http://${ipEditText.text}:80"
+        println(url)
         if (msgText.text.equals("Connecting...")) return
         runOnUiThread {
             offlineScreen.visibility = View.VISIBLE
@@ -77,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val requestBody = "reset".toRequestBody("plain/text".toMediaType())
-        val request = Request.Builder().url(url)./*post(requestBody).*/build()
+        val request = Request.Builder().url(url).post(requestBody).build()
         httpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
@@ -95,12 +100,13 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity
                     )
                 }
+                println(e.message)
             }
 
             override fun onResponse(call: Call, response: Response) {
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        while (!this@MainActivity::ledControllers.isInitialized) ;
+                        while (!this@MainActivity::ledControllers.isInitialized);
                         this@MainActivity.resetLedUI()
                         offlineScreen.visibility = View.GONE
                         onlineScreen.visibility = View.VISIBLE
